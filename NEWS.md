@@ -1,4 +1,4 @@
-## leafsync 0.1.1.9001 (2022-03-03)
+## leafsync 0.1.1.9002 (2022-03-03)
 
 #### ✨ features and improvements
 
