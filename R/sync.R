@@ -18,6 +18,10 @@
 #'   to bottom left.
 #' @param sync.cursor whether to show cursor position in synced panels (default TRUE).
 #' @param no.initial.sync whether to sync the initial view (default TRUE).
+#' @param between a named list with components "x" and "y" specifying the space
+#'   between panels in pixels . "x" refers to CSS property "margin-right",
+#'   "y" refers to CSS property "margin-top".
+#'   Default is `list(x = "2px", y = "2px")`.
 #'
 #' @examples
 #' if (interactive()) {
@@ -55,7 +59,8 @@ latticeView <- function(...,
                         full.height = TRUE,
                         sync = "none",
                         sync.cursor = FALSE,
-                        no.initial.sync = TRUE) {
+                        no.initial.sync = TRUE,
+                        between = list(x = "2px", y = "2px")) {
 
   ## convert all ... objects to list or extract list if list was passed
   ls <- list(...)
@@ -69,6 +74,7 @@ latticeView <- function(...,
     }
 
     # modify the sizingPolicy for full screen heights
+    hght = "400px"
     if (full.height == TRUE) {
       nrow = round(length(ls) / ncol, 0)
       hght = 100 / nrow - 1
@@ -85,10 +91,21 @@ latticeView <- function(...,
   }
 
   ## calculate div width depending on ncol and set div style
+  between = utils::modifyList(
+    list(x = "2px", y = "2px")
+    , between
+  )
   wdth <- paste0("width:", round(1 / ncol * 100, 0) - 1, "%;")
-  styl <- paste0("display:inline;",
-                 wdth,
-                 "float:left;border-style:solid;border-color:#BEBEBE;border-width:1px 1px 1px 1px;")
+  styl <- paste0(
+    "display:inline;"
+    , wdth
+    , "float:left;border-width:1px 1px 1px 1px;"
+    , "margin-right:"
+    , between$x
+    , ";margin-top:"
+    , between$y
+    , ";"
+  )
 
   ## htmltools stuff ... ?
   tg <- lapply(seq(ls), function(i) {
@@ -147,7 +164,27 @@ latticeView <- function(...,
     dependencyLeafletsync()
   )
 
-  return(htmltools::browsable(tl))
+  return(
+    htmltools::browsable(
+      htmltools::div(
+        tl
+        , id = paste(
+          "htmlwidget"
+          , as.integer(stats::runif(1, 1, 10000))
+          , sep = "-"
+        )
+        , style = paste0(
+          "width: 100%; height: "
+          , hght
+          , "; position: relative"
+          , "; background-color: transparent"
+          , ";"
+        )
+        , class = "leaflet html-widget html-widget-static-bound leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        , tabindex = "0"
+      )
+    )
+  )
 }
 
 #' @describeIn latticeView alias for ease of typing
@@ -163,14 +200,18 @@ sync <- function(...,
                  full.height = TRUE,
                  sync = "all",
                  sync.cursor = TRUE,
-                 no.initial.sync = TRUE) {
+                 no.initial.sync = TRUE,
+                 between = list(x = "2px", y = "2px")) {
 
-  latticeView(...,
-              ncol = ncol,
-              full.height = full.height,
-              sync = sync,
-              sync.cursor = sync.cursor,
-              no.initial.sync = no.initial.sync)
+  latticeView(
+    ...
+    , ncol = ncol
+    , full.height = full.height
+    , sync = sync
+    , sync.cursor = sync.cursor
+    , no.initial.sync = no.initial.sync
+    , between = between
+  )
 
 }
 

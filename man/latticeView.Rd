@@ -6,13 +6,27 @@
 \alias{sync}
 \title{View two or more (possibly synchronised) mapview or leaflet maps}
 \usage{
-latticeView(..., ncol = 2, full.height = TRUE, sync = "none",
-  sync.cursor = FALSE, no.initial.sync = TRUE)
+latticeView(
+  ...,
+  ncol = 2,
+  full.height = TRUE,
+  sync = "none",
+  sync.cursor = FALSE,
+  no.initial.sync = TRUE,
+  between = list(x = "2px", y = "2px")
+)
 
 latticeview(...)
 
-sync(..., ncol = 2, full.height = TRUE, sync = "all",
-  sync.cursor = TRUE, no.initial.sync = TRUE)
+sync(
+  ...,
+  ncol = 2,
+  full.height = TRUE,
+  sync = "all",
+  sync.cursor = TRUE,
+  no.initial.sync = TRUE,
+  between = list(x = "2px", y = "2px")
+)
 }
 \arguments{
 \item{...}{any number of mapview or leaflet objects or a list thereof}
@@ -33,6 +47,11 @@ to bottom left.}
 \item{sync.cursor}{whether to show cursor position in synced panels (default TRUE).}
 
 \item{no.initial.sync}{whether to sync the initial view (default TRUE).}
+
+\item{between}{a named list with components "x" and "y" specifying the space
+between panels in pixels . "x" refers to CSS property "margin-right",
+"y" refers to CSS property "margin-top".
+Default is `list(x = "2px", y = "2px")`.}
 }
 \description{
 This function produces a lattice like view of two or more maps. It is possible to sync
