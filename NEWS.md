@@ -2,7 +2,11 @@
 
 #### ✨ features and improvements
 
+  * new argument `between` to specify space between panels (in pixels).
+
 #### 🐛 bug fixes
+
+  * wrap panels into one div to avoid wrapped text around panels. #5
 
 #### 💬 documentation etc
 
